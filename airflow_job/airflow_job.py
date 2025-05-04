@@ -49,8 +49,8 @@ with DAG(
     batch_details={
         "pyspark_batch":{
             "main_python_file_uri": f"gs://{gcs_bucket}/flight_cicd/spark_job/spark_job.py",
-            "python_file_uri":[],
-            "jar_files_uris":[],
+            #"python_file_uri":["gs://spark-lib/bigquery/spark-bigquery-latest.jar"],
+            "jar_files_uris":["gs://spark-lib/bigquery/spark-3.3-bigquery-0.35.0.jar"],
             "args":[
                 f"--env={env}",
                 f"--bq_project={bq_project}",
@@ -73,7 +73,7 @@ with DAG(
     }
 
     pyspark_job=DataprocCreateBatchOperator(
-        task_id="run_spark_job_on_batches_on dataproc_serverless",
+        task_id="run_spark_job_on_batches_on_dataproc_serverless",
         batch=batch_details,
         batch_id=batch_id,
         project_id="fit-legacy-454720-g4",
