@@ -38,14 +38,14 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
 
         route_data = transformed_data.groupBy("route").agg(
             count("*").alias("total_bookings"),
-            avg(col("flight_duration").cast("double")).alias("Avg Flight Duration"),
+            avg(col("flight_duration").cast("double")).alias("Avg_Flight_Duration"),
             avg(col("length_of_stay").cast("double")).alias("Avg_Stay_Length")
         )
 
         booking_origin_insights = transformed_data.groupBy("booking_origin").agg(
             count("*").alias("total_bookings"),
             avg(col("booking_success_rate").cast("double")).alias("success_rate"),
-            avg(col("purchase_lead").cast("double")).alias("Avg purchase lead")
+            avg(col("purchase_lead").cast("double")).alias("Avg_purchase_lead")
         )
 
 
