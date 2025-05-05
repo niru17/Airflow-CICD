@@ -56,6 +56,8 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
             .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{transformed_table}")\
             .option("writeMethod","direct")\
+            .option("createDisposition", "CREATE_IF_NEEDED")\
+            .option("writeDisposition", "WRITE_TRUNCATE")\
             .mode("overwrite")\
             .save()
         
@@ -64,6 +66,8 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
             .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{route_insights_table}")\
             .option("writeMethod","direct")\
+            .option("createDisposition", "CREATE_IF_NEEDED")\
+            .option("writeDisposition", "WRITE_TRUNCATE")\
             .mode("overwrite")\
             .save()
         
@@ -72,6 +76,8 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
             .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{origin_insights_table}")\
             .option("writeMethod","direct")\
+            .option("createDisposition", "CREATE_IF_NEEDED")\
+            .option("writeDisposition", "WRITE_TRUNCATE")\
             .mode("overwrite")\
             .save()
             
