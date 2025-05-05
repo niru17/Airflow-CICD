@@ -50,7 +50,7 @@ with DAG(
         "pyspark_batch":{
             "main_python_file_uri": f"gs://{gcs_bucket}/flight_cicd/spark_job/spark_job.py",
             #"python_file_uri":["gs://spark-lib/bigquery/spark-bigquery-latest.jar"],
-            "jar_files_uris":["gs://spark-lib/bigquery/spark-3.3-bigquery-0.35.0.jar"],
+            "jar_file_uris":["gs://spark-lib/bigquery/spark-3.3-bigquery-0.35.0.jar"],
             "args":[
                 f"--env={env}",
                 f"--bq_project={bq_project}",
@@ -64,7 +64,7 @@ with DAG(
             "version":"2.2",
         },
         "environment_config":{
-            "execution_conifg":{
+            "execution_config":{
                 "service_account":"863324801108-compute@developer.gserviceaccount.com",
                 "network_uri":"projects/fit-legacy-454720-g4/global/networks/default",
                 "subnetwork_uri":"projects/fit-legacy-454720-g4/regions/us-central1/subnetworks/default",
