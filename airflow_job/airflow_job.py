@@ -32,7 +32,7 @@ with DAG(
 
     transformed_table=tables["transformed_table"]
     route_insights_table=tables["route_insights_table"]
-    orgin_insights_table=tables["orgin_insights_table"]
+    origin_insights_table=tables["origin_insights_table"]
 
     batch_id= f"flight-booking-batch-{env}-{str(uuid.uuid4())[:8]}"
 
@@ -57,7 +57,7 @@ with DAG(
                 f"--bq_dataset={bq_dataset}",
                 f"--transformed_table={transformed_table}",
                 f"--route_insights_table={route_insights_table}",
-                f"--origin_insights_table={orgin_insights_table}"
+                f"--origin_insights_table={origin_insights_table}"
             ]
         },
         "runtime_config":{

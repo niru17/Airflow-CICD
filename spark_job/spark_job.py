@@ -11,7 +11,7 @@ logging.basicConfig(
 
 logging=logging.getLogger(__name__)
 
-def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,orgin_insights_table):
+def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin_insights_table):
     try:
         spark=SparkSession.builder.appName("FlightBookingCICD").getOrCreate()
         logging.info("Spark session Intialized.")
@@ -40,7 +40,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,orgin_
             avg("length_of_stay").alias("Avg_Stay_Length")
         )
 
-        booking_origin_insights=transformed_data.groupBy("booking_orgin").agg(
+        booking_origin_insights=transformed_data.groupBy("booking_origin").agg(
             count("*").alias("total_bookings"),
             avg("booking_success_rate").alias("success_rate"),
             avg("purchase_lead").alias("Avg purchase lead")
@@ -64,10 +64,10 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,orgin_
             .mode("overwrite")\
             .save()
         
-        logging.info(f"Writing transformed data into BigQuery Table: {bq_project}:{bq_dataset}.{orgin_insights_table}")
+        logging.info(f"Writing transformed data into BigQuery Table: {bq_project}:{bq_dataset}.{origin_insights_table}")
         booking_origin_insights.write\
             .format("bigquery")\
-            .option("table",f"{bq_project}:{bq_dataset}.{orgin_insights_table}")\
+            .option("table",f"{bq_project}:{bq_dataset}.{origin_insights_table}")\
             .option("writeMethod","direct")\
             .mode("overwrite")\
             .save()
@@ -89,7 +89,7 @@ if __name__== "__main__":
     parser.add_argument("--bq_dataset",required=True, help="BigQuery Dataset")
     parser.add_argument("--transformed_table",required=True, help="BigQuery Table for transformed data")
     parser.add_argument("--route_insights_table",required=True, help="BigQuery Table for Route Insights data")
-    parser.add_argument("--orgin_insights_table",required=True, help="BigQuery Table for Origin Insights data")
+    parser.add_argument("--origin_insights_table",required=True, help="BigQuery Table for Origin Insights data")
 
     args=parser.parse_args()
 
@@ -99,5 +99,5 @@ if __name__== "__main__":
         bq_dataset=args.bq_dataset,
         transformed_table=args.transformed_table,
         route_insights_table=args.route_insights_table,
-        orgin_insights_table=args.orgin_insights_table
+        origin_insights_table=args.origin_insights_table
     )
