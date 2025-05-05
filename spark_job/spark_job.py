@@ -53,7 +53,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
 
         logging.info(f"Writing transformed data into BigQuery Table: {bq_project}:{bq_dataset}.{transformed_table}")
         transformed_data.write\
-            .format("bigquery")\
+            .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{transformed_table}")\
             .option("writeMethod","direct")\
             .mode("overwrite")\
@@ -61,7 +61,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
         
         logging.info(f"Writing transformed data into BigQuery Table: {bq_project}:{bq_dataset}.{route_insights_table}")
         route_data.write\
-            .format("bigquery")\
+            .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{route_insights_table}")\
             .option("writeMethod","direct")\
             .mode("overwrite")\
@@ -69,7 +69,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
         
         logging.info(f"Writing transformed data into BigQuery Table: {bq_project}:{bq_dataset}.{origin_insights_table}")
         booking_origin_insights.write\
-            .format("bigquery")\
+            .format("com.google.cloud.spark.bigquery.v2.Spark33BigQueryTableProvider")\
             .option("table",f"{bq_project}:{bq_dataset}.{origin_insights_table}")\
             .option("writeMethod","direct")\
             .mode("overwrite")\
