@@ -25,7 +25,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
         logging.info("Transformation started..")
 
         transformed_data = data.withColumn(
-        "is_weekend", when(col("flight_day").isin("Sat", "Sun"), lit(1)).otherwise(lit(0))
+            "is_weekend", when(col("flight_day").isin("Sat", "Sun"), lit(1)).otherwise(lit(0))
         ).withColumn(
             "lead_time_category",
             when(col("purchase_lead").cast("int") < 7, lit("Last-minute"))
@@ -38,13 +38,13 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
 
         route_data = transformed_data.groupBy("route").agg(
             count("*").alias("total_bookings"),
-            avg("flight_duration").alias("Avg Flight Duration"),
-            avg("length_of_stay").alias("Avg_Stay_Length")
+            avg(col("flight_duration").cast("double")).alias("Avg Flight Duration"),
+            avg(col("length_of_stay").cast("double")).alias("Avg_Stay_Length")
         )
 
         booking_origin_insights = transformed_data.groupBy("booking_origin").agg(
             count("*").alias("total_bookings"),
-            avg("booking_success_rate").alias("success_rate"),
+            avg(col("booking_success_rate").cast("double")).alias("success_rate"),
             avg(col("purchase_lead").cast("double")).alias("Avg purchase lead")
         )
 
