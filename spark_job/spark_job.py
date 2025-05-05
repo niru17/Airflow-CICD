@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 import argparse
 import logging
-from pyspark.sql.functions import col, count, avg, when, lit, expr
+from pyspark.sql.functions import *
 import sys
 
 logging.basicConfig(
@@ -24,27 +24,30 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
 
         logging.info("Transformation started..")
 
-        transformed_data=data.withColumn(
-            "is_weekend",when(col("flight_day").isin("Sat","Sun"),lit(1)).otherwise(lit(0))
+        transformed_data = data.withColumn(
+        "is_weekend", when(col("flight_day").isin("Sat", "Sun"), lit(1)).otherwise(lit(0))
         ).withColumn(
-            "lead_time_category",when(col("purchase_lead")<7,lit("Last-minute"))
-                                .when((col("purchase_lead")>=7)& (col("purchase_lead")<30),lit("Short-Term"))
-                                .otherwise("Long-term")
+            "lead_time_category",
+            when(col("purchase_lead").cast("int") < 7, lit("Last-minute"))
+            .when((col("purchase_lead").cast("int") >= 7) & (col("purchase_lead").cast("int") < 30), lit("Short-Term"))
+            .otherwise("Long-term")
         ).withColumn(
-            "booking_success_rate",expr("booking_complete"/"num_passenger")
+            "booking_success_rate",
+            (col("booking_complete").cast("double") / col("num_passenger").cast("double"))
         )
 
-        route_data=transformed_data.groupBy("route").agg(
+        route_data = transformed_data.groupBy("route").agg(
             count("*").alias("total_bookings"),
             avg("flight_duration").alias("Avg Flight Duration"),
             avg("length_of_stay").alias("Avg_Stay_Length")
         )
 
-        booking_origin_insights=transformed_data.groupBy("booking_origin").agg(
+        booking_origin_insights = transformed_data.groupBy("booking_origin").agg(
             count("*").alias("total_bookings"),
             avg("booking_success_rate").alias("success_rate"),
-            avg("purchase_lead").alias("Avg purchase lead")
+            avg(col("purchase_lead").cast("double")).alias("Avg purchase lead")
         )
+
 
         logging.info("Data Tranformations completed.")
 
