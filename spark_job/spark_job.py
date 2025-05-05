@@ -33,7 +33,7 @@ def main(env,bq_project,bq_dataset,transformed_table,route_insights_table,origin
             .otherwise("Long-term")
         ).withColumn(
             "booking_success_rate",
-            (col("booking_complete").cast("double") / col("num_passenger").cast("double"))
+            (col("booking_complete").cast("double") / col("num_passengers").cast("double"))
         )
 
         route_data = transformed_data.groupBy("route").agg(
