@@ -79,9 +79,3 @@ Located at `.github/workflows/ci-cd.yaml`, the GitHub Actions pipeline:
 
 **Niranjana Subramanian**  
 _Data Engineer | Cloud & Data Enthusiast_
-
----
-
-## 📝 License
-
-This project is for educational and demonstration purposes.
